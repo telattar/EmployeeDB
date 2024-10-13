@@ -2,12 +2,14 @@ import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { supabase } from 'src/supabase';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { panel } from 'src/main';
 
 @Injectable()
 export class EmployeesService {
     async getAllEmployees() {
         try {
             const { data, error } = await supabase.from('Employees').select(`*`);
+            panel.track("Someone looked up all of the employees!");
             if (error) throw error;
 
             return data;

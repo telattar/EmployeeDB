@@ -2,6 +2,7 @@ import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateChildDto } from './dto/create-child.dto';
 import { supabase } from 'src/supabase';
 import { UpdateChildDto } from './dto/update-child.dto';
+import { panel } from 'src/main';
 
 @Injectable()
 export class ChildrenService {
@@ -66,6 +67,7 @@ export class ChildrenService {
             const { error } = await supabase.from('Children').delete().eq('id', id);
             if (error) throw error;
 
+            panel.track("A child has been deleted.")
             return { message: 'Child deleted successfully.' };
         } catch (error) {
             throw error;
