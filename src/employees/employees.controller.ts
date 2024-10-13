@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { EmployeesService } from './employees.service';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
@@ -24,6 +24,7 @@ export class EmployeesController {
     }
 
     @Patch(':id')
+    @HttpCode(HttpStatus.NO_CONTENT)
     async updateEmployee(@Param() id: string, @Body() data: UpdateEmployeeDto) {
         return await this.employeeServices.updateEmployee(id, data);
     }
