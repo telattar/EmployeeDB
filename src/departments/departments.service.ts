@@ -70,4 +70,21 @@ export class DepartmentsService {
                 throw error;
         }
     }
+
+    async deleteDepartment(id: string) {
+        try {
+            const { data: existingDepartment, error: err } = await supabase.from('Departments').select(`id`).eq('id', id);
+            if (err) throw err;
+            if (!existingDepartment.length) throw new NotFoundException('No such department with this Id', { cause: HttpStatus.NOT_FOUND, description: 'Department not found' });
+
+            // when a department is deleted, all the related employees and their children are also deleted (cascade)
+            const { error } = await supabase.from('Departments').delete().eq('id', id);
+            if (error)
+                throw error;
+
+            return { message: "Department deleted successfully." };
+        } catch (error) {
+            throw error;
+        }
+    }
 }
